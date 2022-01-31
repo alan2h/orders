@@ -24,15 +24,15 @@
 <!-- ABOUT THE PROJECT -->
 ## requirements
 
- ``` pip install -r requirements
-   ```
+  pip install -r requirements
+   
 
 ## tests
 
- ``` python manage.py test
-   ```
+  python manage.py test
+  
 
 ## App
 
- ``` python manage.py runserver
-   ```
+ python manage.py runserver
+   
