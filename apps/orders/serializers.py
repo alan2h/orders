@@ -31,6 +31,11 @@ class OrderSerializer(serializers.Serializer):
         """
          check if orderDetail
         """
+        for i in range(0, len(value)):
+            for j in range(i+1, len(value)):
+                if(value[i]['product'] == value[j]['product']):
+                    raise serializers.ValidationError(
+                        'this product is duplicated')
         serializer = OrderDetailSerializer(data=value, many=True)
         if serializer.is_valid():
             return value
