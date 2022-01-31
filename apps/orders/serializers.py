@@ -6,7 +6,7 @@ from ..products.models import Product
 from .models import Order, OrderDetail
 
 
-class OrderDetailSerializer(serializers.Serializer):
+class OrderDetailSerializer(serializers.ModelSerializer):
 
     cuantity = serializers.IntegerField()
     product = serializers.IntegerField()
@@ -21,11 +21,16 @@ class OrderDetailSerializer(serializers.Serializer):
             return data
         raise serializers.ValidationError('this product not exists.')
 
+    class Meta:
+        model = OrderDetail
+        fields = ['cuantity', 'product']
 
-class OrderSerializer(serializers.Serializer):
+
+class OrderSerializer(serializers.ModelSerializer):
 
     date_time = serializers.DateTimeField()
     order_detail = serializers.JSONField()
+    details = OrderDetailSerializer(many=True, required=False)
 
     def validate_order_detail(self, value):
         """
@@ -42,24 +47,12 @@ class OrderSerializer(serializers.Serializer):
         else:
             raise serializers.ValidationError(serializer.errors)
 
-
-class OrderDetailListSerializer(serializers.ModelSerializer):
-
-    product = ProductSerializer()
-
-    class Meta:
-        model = OrderDetail
-        fields = '__all__'
-
-
-class OrderListSerializer(serializers.ModelSerializer):
-    details = OrderDetailListSerializer(many=True)
-
     class Meta:
         model = Order
         fields = (
             'id',
             'date_time',
             'details',
-            'get_total'
+            'get_total',
+            'order_detail'
         )

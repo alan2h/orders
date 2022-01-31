@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import OrderSerializer, OrderListSerializer
+from .serializers import OrderSerializer
 from .models import Order
 from .repositories import OrderRepository
 
@@ -33,5 +33,5 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        serializer = OrderListSerializer(queryset, many=True)
+        serializer = OrderSerializer(queryset, many=True)
         return Response(serializer.data)
