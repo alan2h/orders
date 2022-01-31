@@ -28,8 +28,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         order_repository = OrderRepository()
         data = order_repository.create_order(**serializer.data)
-        return Response({"status": 'success', "data": data},
-                        status=200)
+        return Response({"status": 'created', "data": data},
+                        status=201)
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())

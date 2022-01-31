@@ -1,0 +1,219 @@
+{
+	"variables": [],
+	"info": {
+		"name": "clicoh",
+		"_postman_id": "c5bf7794-39f5-8b7a-f682-1a2835a39c56",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Registrar un producto",
+			"request": {
+				"url": "http://127.0.0.1:8000/products/api/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQzNjQyODU5LCJpYXQiOjE2NDM2NDI1NDgsImp0aSI6IjQ0M2RhMTEyY2U4OTRmZmVhOWE1NDdlOGQwYjhiMWI4IiwidXNlcl9pZCI6MX0.eQvTUxuqNNoanoeNBbkWMFLje7j2bC7KXxo1qRzT0U4",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "dddddddd",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "23.3",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "stock",
+							"value": "2",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Listar todos los productos",
+			"request": {
+				"url": "http://127.0.0.1:8000/products/api/",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar un producto",
+			"request": {
+				"url": "http://127.0.0.1:8000/products/api/1/",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar stock de un producto",
+			"request": {
+				"url": "http://127.0.0.1:8000/products/api/2/",
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "stock",
+							"value": "4",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Registrar una orden",
+			"request": {
+				"url": "http://127.0.0.1:8000/orders/api/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "order_detail",
+							"value": "[{\n\t\t\"cuantity\": 5,\n               \"product\":2\n\t},{\n\t\t\"cuantity\": 5,\n               \"product\":3\n\t}]",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "date_time",
+							"value": "2009-09-09",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar un producto",
+			"request": {
+				"url": "http://127.0.0.1:8000/products/api/2/",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar una orden. Restaura stock del producto",
+			"request": {
+				"url": "http://127.0.0.1:8000/orders/api/13/",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar una orden y sus detalles",
+			"request": {
+				"url": "http://127.0.0.1:8000/orders/api/",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"url": "http://127.0.0.1:8000/api/token/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "se242403germanb",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "refresh",
+			"request": {
+				"url": "http://127.0.0.1:8000/api/token/refresh/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "refresh",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0MzcyODk0OCwiaWF0IjoxNjQzNjQyNTQ4LCJqdGkiOiI4ZjU3Njk1NDM4NzM0NjNhOTViN2ZiNjg0MTk0YWE1NyIsInVzZXJfaWQiOjF9.OAFBCHSN3BjgzKxMJGdqtm_-QRVf7kbS0mI6MflDR84",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
