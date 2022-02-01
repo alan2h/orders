@@ -12,6 +12,7 @@
       <ul>
         <li><a href="#requirements">Install requirements</a></li>
         <li><a href="#tests">Run tests</a></li>
+        <li><a href="#build">Build app</a></li>
         <li><a href="#App">Run App</a></li>
       </ul>
     </li>
@@ -30,9 +31,15 @@
 ## tests
 
   python manage.py test
+
+
+## build
+
+sudo docker-compose -f development.yml build
   
 
 ## App
 
- python manage.py runserver
+sudo docker-compose -f development.yml up   
+
    

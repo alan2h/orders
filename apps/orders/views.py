@@ -20,11 +20,18 @@ class OrderViewSet(viewsets.ModelViewSet):
     order_repository = OrderRepository()
 
     def perform_destroy(self, instance):
+        """
+            logically delete an order
+            and recover the stock
+        """
         self.order_repository.restore_stock(instance.id)
         instance.remove = True
         instance.save()
 
     def create(self, request, *args, **kwargs):
+        """
+            create an order
+        """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = self.order_repository.create_order(**serializer.data)
@@ -32,17 +39,28 @@ class OrderViewSet(viewsets.ModelViewSet):
                         status=201)
 
     def list(self, request, *args, **kwargs):
+        """
+            list all orders
+        """
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.serializer_class_listing(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
+        """
+            retrieve an order
+        """
         instance = self.get_object()
         serializer = self.serializer_class_listing(instance)
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
+        """
+            This view only works for the put,
+            the patch overrides it, because to make a
+            modification to the order you should make a credit note.
+        """
+        partial = False
         instance = self.get_object()
         serializer = self.serializer_class(data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
