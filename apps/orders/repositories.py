@@ -31,3 +31,5 @@ class OrderRepository:
             product = Product.objects.get(pk=detail.product.id)
             product.stock += detail.cuantity
             product.save()
+
+

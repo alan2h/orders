@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import OrderSerializer
+from .serializers import OrderSerializer, OrderListSerializer
 from .models import Order
 from .repositories import OrderRepository
 
@@ -15,6 +15,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     """
     queryset = Order.objects.filter(remove=False)
     serializer_class = OrderSerializer
+    serializer_class_listing = OrderListSerializer
     permission_classes = [IsAuthenticated]
 
     def perform_destroy(self, instance):
@@ -33,5 +34,20 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        serializer = OrderSerializer(queryset, many=True)
+        serializer = self.serializer_class_listing(queryset, many=True)
         return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.serializer_class_listing(instance)
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.serializer_class(data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+        return Response({"status": 'created', "data": 'data'},
+                        status=201)

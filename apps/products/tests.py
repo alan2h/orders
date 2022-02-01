@@ -38,7 +38,7 @@ class ProductCase(APITestCase):
 
     def test_product_stock(self):
         """
-            error product repeat
+            error product minor zero
         """
 
         user = User.objects.get(pk=1)

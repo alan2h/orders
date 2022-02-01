@@ -66,8 +66,8 @@ class OrderCase(APITestCase):
                 "cuantity": 5,
                 "product": 2
                 }, {
-                "cuantity": 5,
-                "product": 3000
+                "cuantity": 3000,
+                "product": 5
                 }]},
             format='json'
         )

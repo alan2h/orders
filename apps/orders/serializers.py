@@ -2,11 +2,12 @@
 from apps.products.serializers import ProductSerializer
 from rest_framework import serializers
 
+
 from ..products.models import Product
 from .models import Order, OrderDetail
 
 
-class OrderDetailSerializer(serializers.ModelSerializer):
+class OrderDetailSerializer(serializers.Serializer):
 
     cuantity = serializers.IntegerField()
     product = serializers.IntegerField()
@@ -21,16 +22,11 @@ class OrderDetailSerializer(serializers.ModelSerializer):
             return data
         raise serializers.ValidationError('this product not exists.')
 
-    class Meta:
-        model = OrderDetail
-        fields = ['cuantity', 'product']
 
-
-class OrderSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.Serializer):
 
     date_time = serializers.DateTimeField()
     order_detail = serializers.JSONField()
-    details = OrderDetailSerializer(many=True, required=False)
 
     def validate_order_detail(self, value):
         """
@@ -47,12 +43,24 @@ class OrderSerializer(serializers.ModelSerializer):
         else:
             raise serializers.ValidationError(serializer.errors)
 
+
+class OrderDetailListSerializer(serializers.ModelSerializer):
+
+    product = ProductSerializer()
+
+    class Meta:
+        model = OrderDetail
+        fields = '__all__'
+
+
+class OrderListSerializer(serializers.ModelSerializer):
+    details = OrderDetailListSerializer(many=True)
+
     class Meta:
         model = Order
         fields = (
             'id',
             'date_time',
             'details',
-            'get_total',
-            'order_detail'
+            'get_total'
         )
