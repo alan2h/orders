@@ -62,5 +62,6 @@ class OrderListSerializer(serializers.ModelSerializer):
             'id',
             'date_time',
             'details',
-            'get_total'
+            'get_total',
+            'get_total_usd'
         )

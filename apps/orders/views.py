@@ -17,18 +17,17 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     serializer_class_listing = OrderListSerializer
     permission_classes = [IsAuthenticated]
+    order_repository = OrderRepository()
 
     def perform_destroy(self, instance):
-        order_repository = OrderRepository()
-        order_repository.restore_stock(instance.id)
+        self.order_repository.restore_stock(instance.id)
         instance.remove = True
         instance.save()
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        order_repository = OrderRepository()
-        data = order_repository.create_order(**serializer.data)
+        data = self.order_repository.create_order(**serializer.data)
         return Response({"status": 'created', "data": data},
                         status=201)
 
@@ -47,7 +46,9 @@ class OrderViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.serializer_class(data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
+        self.order_repository.update_order(self.get_object(),
+                                           **serializer.data)
         if getattr(instance, '_prefetched_objects_cache', None):
             instance._prefetched_objects_cache = {}
-        return Response({"status": 'created', "data": 'data'},
-                        status=201)
+        return Response({"status": 'updated', "data": serializer.data},
+                        status=200)

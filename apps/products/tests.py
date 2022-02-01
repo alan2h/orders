@@ -12,9 +12,9 @@ class ProductCase(APITestCase):
 
         user = User.objects.create_user(username='admin',
                                         email='user@foo.com',
-                                        password='se242403german')
-        user.is_active = True
-        user.save()
+                                        password='se242403german',
+                                        is_active=True)
+        self.user = user
 
     def test_register_confirm(self):
         """
@@ -22,8 +22,7 @@ class ProductCase(APITestCase):
             register product
         """
 
-        user = User.objects.get(pk=1)
-        self.client.force_authenticate(user=user)
+        self.client.force_authenticate(user=self.user)
 
         response = self.client.post(
             '/products/api/',
@@ -41,8 +40,7 @@ class ProductCase(APITestCase):
             error product minor zero
         """
 
-        user = User.objects.get(pk=1)
-        self.client.force_authenticate(user=user)
+        self.client.force_authenticate(user=self.user)
 
         response = self.client.post(
             '/products/api/',

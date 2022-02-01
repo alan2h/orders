@@ -1,7 +1,7 @@
 from django.db import models
 
 from ..products.models import Product
-
+from .services import DolarsiService
 from ..libs.models import ClicOh
 
 
@@ -17,6 +17,17 @@ class Order(ClicOh):
         """
         details = OrderDetail.objects.filter(order__id=self.id)
         return sum([i.product.price * i.cuantity for i in details])
+
+    @property
+    def get_total_usd(self):
+        """Get total in usd method.
+
+        Calculate the total price of the order and convert in service.
+        """
+        dolar_service = DolarsiService()
+        details = OrderDetail.objects.filter(order__id=self.id)
+        amount = sum([i.product.price * i.cuantity for i in details])
+        return dolar_service.convert(amount)
 
 
 class OrderDetail(models.Model):

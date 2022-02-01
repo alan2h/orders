@@ -1,6 +1,7 @@
 
 from rest_framework.test import APITestCase
 from rest_framework import status
+from unittest import mock
 
 
 from django.contrib.auth.models import User
@@ -15,9 +16,9 @@ class OrderCase(APITestCase):
 
         user = User.objects.create_user(username='admin',
                                         email='user@foo.com',
-                                        password='se242403german')
-        user.is_active = True
-        user.save()
+                                        password='se242403german',
+                                        is_active=True)
+        self.user = user
 
         Product.objects.create(
             name='example 1',
@@ -30,23 +31,24 @@ class OrderCase(APITestCase):
             stock=5
         )
 
-    def test_register_confirm(self):
+    @mock.patch('apps.orders.services.DolarsiService.convert')
+    def test_register_confirm(self, mock_dolar):
         """
             confirm order,
             register order
         """
 
-        user = User.objects.get(pk=1)
-        self.client.force_authenticate(user=user)
+        self.client.force_authenticate(user=self.user)
+
+        mock_response = mock.Mock()
+        mock_response.status_code = 201
+        mock_dolar.return_value = '204.4'
 
         response = self.client.post(
             '/orders/api/',
             {'date_time': '2009-09-09', 'order_detail': [{
                     "cuantity": 5,
                     "product": 1
-                    }, {
-                        "cuantity": 5,
-                        "product": 2
                     }]},
             format='json'
         )
@@ -57,8 +59,7 @@ class OrderCase(APITestCase):
             error order stock
         """
 
-        user = User.objects.get(pk=1)
-        self.client.force_authenticate(user=user)
+        self.client.force_authenticate(user=self.user)
 
         response = self.client.post(
             '/orders/api/',
@@ -78,8 +79,7 @@ class OrderCase(APITestCase):
             if product is repeat
         """
 
-        user = User.objects.get(pk=1)
-        self.client.force_authenticate(user=user)
+        self.client.force_authenticate(user=self.user)
 
         response = self.client.post(
             '/orders/api/',
